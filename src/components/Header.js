@@ -8,13 +8,13 @@ const Header = ({ isLoggedIn, onLogout }) => {
         <nav>
           <ul className="nav">
             <li className="nav-item">
-              <a href="#" className="nav-link text-light">Home</a>
+              <a href="#home" className="nav-link text-light">Home</a>
             </li>
             <li className="nav-item">
-              <a href="#" className="nav-link text-light">About</a>
+              <a href="#about" className="nav-link text-light">About</a>
             </li>
             <li className="nav-item">
-              <a href="#" className="nav-link text-light">Contact</a>
+              <a href="#contact" className="nav-link text-light">Contact</a>
             </li>
             {isLoggedIn && (
               <li className="nav-item">

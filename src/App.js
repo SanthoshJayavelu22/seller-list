@@ -18,7 +18,7 @@ const sellersData = [
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sellers, setSellers] = useState(sellersData);
+  const [sellers] = useState(sellersData);
 
   const handleLogin = (credentials) => {
     if (credentials.username && credentials.password) {
