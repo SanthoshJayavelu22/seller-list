@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import LoginForm from './components/LoginForm';
@@ -6,19 +6,33 @@ import SearchBox from './components/SearchBox';
 import SellerList from './components/SellerList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const sellersData = [
-  { name: 'Santhosh', rating: 4.5, review: 'Excellent service!' },
-  { name: 'Sam', rating: 4.0, review: 'Good products.' },
-  { name: 'Ram', rating: 5.0, review: 'Very reliable!' },
-  { name: 'Suresh', rating: 4.5, review: 'Excellent service!' },
-  { name: 'Sathish', rating: 4.0, review: 'Good products.' },
-  { name: 'Ramesh', rating: 5.0, review: 'Very reliable!' },
-];
-
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sellers] = useState(sellersData);
+  const [sellers, setSellers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSellers = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('https://6783105c8b6c7a1316f36933.mockapi.io/sellers'); 
+        const data = await response.json();
+        const mappedData = data.map((seller) => ({
+          name: seller.name,
+          rating: Math.random() * 5, 
+          review: 'Excellent service!', 
+        }));
+        setSellers(mappedData);
+      } catch (error) {
+        console.error('Error fetching sellers:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSellers();
+  }, []);
 
   const handleLogin = (credentials) => {
     if (credentials.username && credentials.password) {
@@ -34,7 +48,7 @@ const App = () => {
     setSearchTerm(term);
   };
 
-  const filteredSellers = sellers.filter(seller =>
+  const filteredSellers = sellers.filter((seller) =>
     seller.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -44,6 +58,8 @@ const App = () => {
       <main className="flex-grow-1">
         {!isLoggedIn ? (
           <LoginForm onLogin={handleLogin} />
+        ) : loading ? (
+          <div className="text-center my-5">Loading sellers...</div>
         ) : (
           <>
             <SearchBox onSearch={handleSearch} />
