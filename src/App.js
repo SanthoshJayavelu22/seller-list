@@ -20,8 +20,8 @@ const App = () => {
         const data = await response.json();
         const mappedData = data.map((seller) => ({
           name: seller.name,
-          rating: Math.random() * 5, 
-          review: 'Excellent service!', 
+          rating: seller.rating, 
+          review: seller.review, 
         }));
         setSellers(mappedData);
       } catch (error) {
